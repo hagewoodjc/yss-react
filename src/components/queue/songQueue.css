@@ -1,0 +1,13 @@
+#queueModalHeader h5 {
+    width: 100%;
+}
+
+.slide-pane__header {
+    color: white;
+    background:#5c6166;
+    max-width: 100%;
+}
+
+.slide-pane .slide-pane__title {
+    max-width: 100%;
+}
