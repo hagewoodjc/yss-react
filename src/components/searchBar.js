@@ -1,29 +1,25 @@
 import React from 'react';
 import SearchInput, {createFilter} from 'react-search-input'
+import { Popover, PopoverHeader, PopoverBody } from 'reactstrap';
 
 import './searchBar.css';
 import songbookIndex from '../songbookIndex.json';
 
 const KEYS_TO_FILTERS = ['id', 'title'];
+const RESULTS_POSITIONS = ['top', 'bottom']
 
 export default class SearchBar extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            searchInput: ''
+            searchInput: '',
+            popoverOpen: false
         }
 
         this.handleSearchClick = this.handleSearchClick.bind(this);
         this.songKeyPress = this.songKeyPress.bind(this);
-        this.handleChange = this.handleChange.bind(this);
+        this.onResultClick = this.onResultClick.bind(this);
     }
-
-    
-
-    handleChange = (event) => {
-        var {name, value} = event.target;
-        this.setState({[name]: value});
-    }  
 
     songKeyPress = (event) => {
         if(event.key === "Enter") {
@@ -40,31 +36,52 @@ export default class SearchBar extends React.Component {
     };    
 
     searchUpdated = (term) => {
-        this.setState({searchInput: term});            
+        var popoverOpen = this.props.enablePowerSearch && term && term.trim() !== '' ? true : false;
+        this.setState({searchInput: term, popoverOpen});            
+    }    
+
+    togglePopover = () => {
+        this.setState({popoverOpen: !this.state.popoverOpen});
     }
-    
+
+    onResultClick = (event, id) => {
+        event.preventDefault();
+        this.setState({searchInput: ''}, () => {
+            this.togglePopover();
+            this.props.onSubmit(id);
+        });
+    }
 
     render() {
         const buttonClass=`btn ${this.props.buttonClass}`;
         const filteredSongs = songbookIndex.songs.filter(createFilter(this.state.searchInput, KEYS_TO_FILTERS))
+        var resultsPlacement = RESULTS_POSITIONS.indexOf(this.props.resultsPlacement) > -1 ? this.props.resultsPlacement : 'bottom';
 
         return (
-            <div className="input-group input-group-lg">
-                <SearchInput id="songNavigation" name="searchInput" className="search-input" onChange={this.searchUpdated} />
-                {/* <input id="songNavigation" name="searchInput" type="text" value={this.state.searchInput} onKeyPress={this.songKeyPress} className="form-control" placeholder="Song Number..." onChange={this.handleChange} /> */}
-                <div className="input-group-append">
-                    <button className={buttonClass} type="button" onClick={this.handleSearchClick}><span>{this.props.submitButton}</span></button>
+            <div>
+                <Popover className="resultsPopover" placement={resultsPlacement} isOpen={this.state.popoverOpen} target={`${this.props.location}-searchControls`} toggle={this.togglePopover}>
+                    <PopoverBody>
+                        <div className="list-group">
+                            {this.props.enablePowerSearch && this.state.searchInput && this.state.searchInput.trim() !== '' ?
+                                filteredSongs.map(song => {
+                                    return (
+                                        <a href="#" className="list-group-item list-group-item-action" onClick={(e) => this.onResultClick(e, song.id)}>
+                                            {`${song.id} - ${song.title}`}
+                                        </a>
+                                    )
+                                })
+                            : ''}
+                        </div>
+                    </PopoverBody>
+                </Popover>
+                    
+                <div id={`${this.props.location}-searchControls`} className="input-group input-group-lg">
+                    <SearchInput id="songNavigation" placeholder="Search songs..." name="searchInput" onKeyPress={this.songKeyPress} value={this.state.searchInput} className="form-control search-field" onChange={this.searchUpdated} />
+                    {/* <input id="songNavigation" name="searchInput" type="text" value={this.state.searchInput} onKeyPress={this.songKeyPress} className="form-control" placeholder="Song Number..." onChange={this.handleChange} /> */}                                        
+                    <div className="input-group-append">
+                        <button className={buttonClass} type="button" onClick={this.handleSearchClick}><span>{this.props.submitButton}</span></button>
+                    </div>    
                 </div>
-                {this.state.searchInput && this.state.searchInput.trim() !== '' ?
-                    filteredSongs.map(song => {
-                        return (
-                            <div className="mail" key={song.id}>
-                            <div className="from">{song.title}</div>
-                            {/* <div className="subject">{email.subject}</div> */}
-                            </div>
-                        )
-                    })
-                : ''}
             </div>
         )
     }

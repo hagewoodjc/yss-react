@@ -113,7 +113,7 @@ export default class Navigation extends React.PureComponent {
                 </div>
                 <div className="p-2 row">
                     <div className="col">
-                        <SearchBar onSubmit={this.navigate} submitButton={<FontAwesomeIcon icon="play"/>} buttonClass="btn-success"/>
+                        <SearchBar onSubmit={this.navigate} enablePowerSearch={true} location="nav" submitButton={<FontAwesomeIcon icon="play"/>} buttonClass="btn-success" resultsPlacement="top"/>
                          {/* <div className="input-group input-group-lg">
                             <input id="songNavigation" name="songInput" type="text" onKeyPress={this.songKeyPress} className="form-control" placeholder="Song Number..." onChange={this.handleChange} />
                             <div className="input-group-append">

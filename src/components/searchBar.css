@@ -1,0 +1,17 @@
+.resultsPopover {
+    max-height: 200px;
+    overflow-y: scroll;
+}
+
+#songNavigation {
+    border: none;
+}
+
+.list-group-item {
+    cursor: pointer; 
+    color: lightblue;   
+}
+
+.list-group-item-action:focus, .list-group-item-action:hover {
+    background: lightgreen;
+}

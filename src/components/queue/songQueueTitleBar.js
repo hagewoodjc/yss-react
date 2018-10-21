@@ -32,7 +32,7 @@ export default class SongQueueTitleBar extends React.Component {
                     <button className="btn btn-danger" onClick={this.onRemoveAll}><FontAwesomeIcon icon="trash-alt" /></button>
                 </div>
                 <div className="ml-auto p-2">
-                    <SearchBar onSubmit={this.onAdd} buttonClass="btn-primary" submitButton={searchSubmitIcon}/>
+                    <SearchBar onSubmit={this.onAdd} enablePowerSearch={true} location="queue" buttonClass="btn-primary" submitButton={searchSubmitIcon}/>
                 </div>
                 <div className="ml-auto p-2">
                     <button className="btn btn-success" onClick={this.handleSaveClick}>Save</button>
