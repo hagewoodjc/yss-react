@@ -1,0 +1,9 @@
+.modalClose {
+    color: white;
+    background: red;
+}
+
+.modal-header {
+    padding: 0;
+    background:#5c6166;
+}
