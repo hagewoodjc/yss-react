@@ -2,6 +2,7 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import SongQueue from './queue/songQueue';
 import SearchBar from './searchBar';
+import Settings from './settings/settings';
 
 import './navigation.css';
 
@@ -21,6 +22,7 @@ export default class Navigation extends React.PureComponent {
         this.loadQueue = this.loadQueue.bind(this);
         this.nextQueue = this.nextQueue.bind(this);
         this.prevQueue = this.prevQueue.bind(this);
+        this.onSettingsClick = this.onSettingsClick.bind(this);
     }
 
     navigate = (id) => {
@@ -90,6 +92,10 @@ export default class Navigation extends React.PureComponent {
             });
         }
     }
+
+    onSettingsClick = () => {
+
+    }
     
     render() {
         return (
@@ -99,7 +105,7 @@ export default class Navigation extends React.PureComponent {
                         <SongQueue queue={this.state.queue} onSave={this.loadQueue} onClearQueue={this.clearQueue}/>
                     </div>
                     <div className="col">
-                        <button className="btn btn-outline-light" type="button"><span><FontAwesomeIcon icon="wrench" size="2x"/></span></button>                    
+                        <Settings />
                     </div>
                 </div>
                 <div className="p-2 row" hidden={this.state.isQueueControlHidden}>
@@ -113,13 +119,7 @@ export default class Navigation extends React.PureComponent {
                 </div>
                 <div className="p-2 row">
                     <div className="col">
-                        <SearchBar onSubmit={this.navigate} enablePowerSearch={true} location="nav" submitButton={<FontAwesomeIcon icon="play"/>} buttonClass="btn-success" resultsPlacement="top"/>
-                         {/* <div className="input-group input-group-lg">
-                            <input id="songNavigation" name="songInput" type="text" onKeyPress={this.songKeyPress} className="form-control" placeholder="Song Number..." onChange={this.handleChange} />
-                            <div className="input-group-append">
-                                <button className="btn btn-success" type="button" onClick={this.handleNavClick}><span><FontAwesomeIcon icon="play"/></span></button>
-                            </div>
-                        </div> */}
+                        <SearchBar onSubmit={this.navigate} enablePowerSearch={true} location="nav" submitButton={<FontAwesomeIcon icon="play"/>} buttonClass="btn-success" resultsPlacement="top"/>                        
                     </div>                    
                 </div>              
             </div>    
