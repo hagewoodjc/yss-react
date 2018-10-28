@@ -1,9 +1,4 @@
-.modalClose {
-    color: white;
-    background: red;
-}
-
-.modal-header {
-    padding: 0;
-    background:#5c6166;
+.react-switch {
+    vertical-align: middle;
+    margin-left: 4px;
 }
