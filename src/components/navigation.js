@@ -13,16 +13,16 @@ export default class Navigation extends React.PureComponent {
             songInput: '',
             queue:[],
             queueIndex: 0,
-            isQueueControlHidden: true
+            isQueueControlHidden: true,
+            enablePowerSearch: false
         };
     
         this.navigate = this.navigate.bind(this);
-        this.handleNavClick = this.handleNavClick.bind(this);
-        this.handleChange = this.handleChange.bind(this);        
+        this.handleNavClick = this.handleNavClick.bind(this);  
         this.loadQueue = this.loadQueue.bind(this);
         this.nextQueue = this.nextQueue.bind(this);
         this.prevQueue = this.prevQueue.bind(this);
-        this.onSettingsClick = this.onSettingsClick.bind(this);
+        this.onSettingsSave = this.onSettingsSave.bind(this);
     }
 
     navigate = (id) => {
@@ -43,11 +43,6 @@ export default class Navigation extends React.PureComponent {
     handleQueueClick = (event) => {
         event.preventDefault(); 
         this.props.onQueue(event);
-    }
-
-    handleChange = (event) => {
-        var {name, value} = event.target;
-        this.setState({[name]: value});
     }
 
     loadQueue = (queue) => {
@@ -93,8 +88,9 @@ export default class Navigation extends React.PureComponent {
         }
     }
 
-    onSettingsClick = () => {
-
+    onSettingsSave = (settings) => {
+        var {enablePowerSearch} = settings;
+        this.setState({enablePowerSearch});
     }
     
     render() {
@@ -105,7 +101,7 @@ export default class Navigation extends React.PureComponent {
                         <SongQueue queue={this.state.queue} onSave={this.loadQueue} onClearQueue={this.clearQueue}/>
                     </div>
                     <div className="col">
-                        <Settings />
+                        <Settings onSave={this.onSettingsSave} enablePowerSearch={this.state.enablePowerSearch}/>
                     </div>
                 </div>
                 <div className="p-2 row" hidden={this.state.isQueueControlHidden}>
@@ -119,7 +115,7 @@ export default class Navigation extends React.PureComponent {
                 </div>
                 <div className="p-2 row">
                     <div className="col">
-                        <SearchBar onSubmit={this.navigate} enablePowerSearch={true} location="nav" submitButton={<FontAwesomeIcon icon="play"/>} buttonClass="btn-success" resultsPlacement="top"/>                        
+                        <SearchBar onSubmit={this.navigate} enablePowerSearch={this.state.enablePowerSearch} location="nav" submitButton={<FontAwesomeIcon icon="play"/>} buttonClass="btn-success" resultsPlacement="top"/>                        
                     </div>                    
                 </div>              
             </div>    
